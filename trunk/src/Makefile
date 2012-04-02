@@ -171,6 +171,20 @@ testF : $(TMPDIR)testF.o $(OBJ)
 cwin: $(TMPDIR)con1123a.o $(COBJ)
 	$(FC) $(TMPDIR)con1123a.o $(COBJ) $(CLIBS) -o cwin
 
+#===============================================================================
+# Get data.
+#===============================================================================
+
+DATA_URL=http://www.webnucleo.org/experimental/mbradle/download/special
+DATA=stellar_cond_data.tar
+DATA_DIR=../data_pub
+
+data:
+	mkdir -p $(DATA_DIR)
+	wget $(DATA_URL)/$(DATA).gz
+	mv ${DATA}.gz $(DATA_DIR)
+	tar xz -C ${DATA_DIR} -f ${DATA_DIR}/${DATA}.gz
+	rm ${DATA_DIR}/${DATA}.gz
 
 #===============================================================================
 # Clean up.
