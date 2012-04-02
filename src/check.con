@@ -1,0 +1,132 @@
+ 0 1 4AlCaMgSiTiFe
+ 1e-3 solar all old Yoneda code+methods
+'DG0216B.001'   2   3   1
+2
+1.0D-3  9.175D0  0.1  0.01
+2000.0  500.0   10.0   0.1
+0.00   2000.0  1.8d0
+23
+'Al'  2.6434d04    -1.       26.98154d0
+'C '  4.3575d03   3d-20     12.011d0
+'Ca'  4.3501d06    -1.       40.08d0
+'Fe'  1.8023d09   -1.       55.847d0
+'Mg'  1.1313d05   -1.       24.305d0
+'N '  5.5379d03   8d-15     14.0067d0
+'Na'  2.0157d03    2d-13       22.98977d0
+'S '  2.4076d05    -1.       32.06d0
+'Si'  1.0000d06   2d-13     28.086d0
+'Ti'  1.7323d06   -1.       47.90d0
+'O '  5.9181d03     4d-12     15.9994d0
+'H '  1.3504d05   9d-7      1.0079d0
+'Ni'  1.5802d09    -1.       58.70d0
+'Cr'  2.4617d06   -1.       51.996d0
+'Co'  5.0358d06    -1.       58.9332d0
+'P '  1.0014d04   -1.       30.97376d0
+'Mn'  2.1964d06   -1.       54.9380d0
+'Cl'  3.1303d04   -1.       35.453d0
+'K '  2.5821d05   -1.       39.098d0
+'F '  1.7684d03   -1.       18.99840d0
+'He'  3.3999d03   -1.        4.00260d0
+'Ne'  2.0000d05   -1.       20.1797d0
+'Ar'  1.0000d04   -1.       39.948d0
+0
+0
+C ************** Example of Existing Condensates ******************
+C  (1600K 0.1 atm)  (Names of species should be deleted before use)
+15
+529 1.1d-10     Perovskite
+903 5.2d-12     Fayalite
+629 8.3d-9      Forsterite
+917 7.5d-10     Si metal
+918 2.7d-10     Cr metal
+919 9.4d-11     Co metal
+920 2.1d-9      Ni metal
+921 3.3d-8      Fe metal
+922 5.4d-3      X(Cr)
+923 4.7d-4      X(Fe)
+633 1.0d-9      Spinel
+926 2.7d-9      CaO   liquid
+927 2.3d-9      MgO   liquid
+928 9.4d-10     SiO2  liquid
+929 4.1d-9      Al2O3 liquid
+C *************** Example of Seeds *****************
+'CMAS liquid'  10  0
+0.370   0.002   0.618   0.010
+0.464   0.008   0.370   0.158
+0.375   0.083   0.178   0.364
+0.154   0.372   0.079   0.395
+0.142   0.190   0.099   0.568
+0.0532  1d-4    0.947   1d-4
+0.0433  0.361   0.595   1d-4
+0.441   0.0816  0.224   0.254
+0.322   0.171   0.198   0.309
+0.100   0.500   0.0921  0.308
+'Metal   '  2  1
+0.000   0.000   0.000   0.200   0.800
+0.0587  0.00418 0.00281 0.251   0.683
+C ************************** COMMENTS *******************************
+C This is a control file "AG0621-3.con" 6/21/94
+C for the condensation program "cwin0621.exe" 6/21/94 or later.
+C Data are not column formatted except for Lines 1 and 2.
+C However, no comments are allowed between lines
+C Line 1 Program control flags (I2 format):
+C        1  Debug mode:            0=No  1-3=Level
+C        2  Make summary file:     0=No  1=Yes
+C        3  Make table-like files: 0=No  1=Master table
+C                                  2=Master+Elements specified
+C                                  3=Master+Elements+Solid solutions
+C                                  4=all of the above+oxide weight % of solids
+C        4-  Element names for table-like files
+C Line 2 Comments to be printed (column 1-79)
+C Line 3 Filename of thermodynamic data, type, and no. of coeff. to be used
+C        for interpolation of equilibrium constants.
+C        Type=1 : Coefficients for equilibrium constants of formation
+C        Type=2 : Free energies of formation
+C        Coefficients C(*) are:   Log10(Kf)=C(1)+C(2)/T+C(3)/T**2+...
+C              ( T = temperature (K) / 100 )
+C        And reference state pressure: 0 = 1 atm, 1 = 1 bar
+C Line 4 Calculation mode
+C        0: Temperature variable, Volume is fixed as a function of T
+C           according to Gamma for expansion. Initial volume will be
+C           calculated from P initial and T initial for expansion.
+C           (Ideal gas T-V relations are used (See Line 7):
+C            This is approximately correct when gas is dominant.
+C            The total pressure depends on gaseous species.
+C            If H2 is dominant, total pressure is about half of
+C            the specified initial pressure, and if no expansion,
+C            total pressure varies very little with temperature.)
+C        1: Initial Pressure variable, Temperature fixed
+C        2: Temperature variable, Pressure fixed (=Isobaric)
+C           (Total pressure is always equal to
+C            the specified initial pressure.)
+C        3: Total Pressure variable, Temperature fixed
+C Line 5 Pressures of Start, End (atm or bar),
+C        Step, and Minimum resolution (Log10(P) unit)
+C Line 6 Temperatures of Start, End, Step, and Minimum resolution (K)
+C Line 7 Gamma for expansion (valid for mode=0)
+C        (If no expansion, Gamma=0 then V/T=const.;
+C         else Gamma=g/(g-1), g=Cp/Cv<=5/3 then TV^(g-1)=const.;
+C         if Gamma=1, V=const.),
+C        starting temperature of expansion (K),
+C        and an initial guess for TG (= total N of elements / total N of
+C        gaseous species; We can consider total N of elements = 1 mole)
+C        required for mode=2 or 3.
+C Line 8 No. of elements
+C Line 9-29 (depends on No. of elements)
+C          Names of elements,
+C          Abundances of elements (relative values),
+C          Guesses of initial partial pressure of monatomic gases (atm or bar)
+C          (if values are 0.0 or negative, the program will make them up),
+C          and Atomic Weights
+C Line 30 No. of condensates existing at the starting temperature
+C Line **   If there are condensates (Line 30 > 0),
+C           species numbers and approximate abundances of condensates (mol/l)
+C           (for Spinel solid solution, give X(Cr), X(Fe) and total mol/l)
+C Line 31 No. of solid or liquid solutions which need seeds (initial guesses)
+C         for the estimation of initial mole fractions.
+C         CMAS liquid or Metal may need them.
+C Line **   If Line 31 > 0, following data are required for each solid or
+C           liquid solution.
+C           Name of the solution, No. of seeds (including No. of "must check"),
+C           No. of seeds which must be checked in each iteration,
+C           mole fractions of the endmembers
