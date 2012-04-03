@@ -21,7 +21,7 @@ evolveTimeStep(
 int zone_decay( Libnucnet__Zone *, void * );
 int
 clean_species( Libnucnet__Species *, Libnucnet__Zone * );
-char * string_trim_end( char * );
+char * trimwhitespace( char * );
 
 Libnucnet *p_libnucnet;
 
@@ -41,11 +41,10 @@ initialize_(
 
    Libnucnet__Net__updateFromXml(
      Libnucnet__getNet( p_libnucnet ),
-     string_trim_end( s1 ),
-     string_trim_end( s2 ),
+     trimwhitespace( s1 ),
+     trimwhitespace( s2 ),
      NULL
    );
-   
 
    return 0;
 }
@@ -93,7 +92,7 @@ getzone_( const char *s_zone_xml )
 
   Libnucnet__assignZoneDataFromXml(
     p_libnucnet,
-    string_trim_end( s1 ),
+    trimwhitespace( s1 ),
     NULL
   );
 
@@ -471,15 +470,36 @@ evolveTimeStep(
 }
 
 /**
- * Routine to trim the trailing white spaces from a fortran-generated string.
-*/
+ * Routine to trim the trailing white spaces from a string.
+ */
 
-char * string_trim_end( char * string )
+char *trimwhitespace( char *str )
 {
 
-  char* original = string + strlen(string);
-  while(*--original == ' ');
-  *(original + 1) = '\0';
-  return string;
+  char *end;
+
+/*
+  Trim leading space
+*/
+
+  while(isspace(*str)) str++;
+
+  if(*str == 0)  /* All spaces? */
+    return str;
+
+/*
+  Trim trailing space
+*/
+
+  end = str + strlen(str) - 1;
+  while(end > str && isspace(*end)) end--;
+
+/*
+  Write new terminator
+*/
+
+  *(end+1) = 0;
+
+  return str;
 
 }
