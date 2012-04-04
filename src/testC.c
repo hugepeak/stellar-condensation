@@ -478,26 +478,25 @@ char *trimwhitespace( char *str )
 {
 
   char *end;
+  int i = 0;
 
-/*
-  Trim leading space
-*/
+/* Trim leading space */
 
   while(isspace(*str)) str++;
 
   if(*str == 0)  /* All spaces? */
     return str;
 
-/*
-  Trim trailing space
-*/
+/* Trim trailing space */
 
   end = str + strlen(str) - 1;
-  while(end > str && isspace(*end)) end--;
+  while(end > str && isspace(*end))
+  {
+    end--;
+    printf( "%d %s\n", i++, end );
+  }
 
-/*
-  Write new terminator
-*/
+/* Write new terminator */
 
   *(end+1) = 0;
 
