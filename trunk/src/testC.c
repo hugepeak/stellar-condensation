@@ -4,6 +4,7 @@
 
 #define D_CUTOFF    0.e-15
 #define S_DEBUG     "debug"
+#define I_BUF       256
 
 int initialize_( const char *, const char * );
 int getzone_( const char * );
@@ -33,9 +34,12 @@ initialize_(
 )
 {
 
-   char s1[50], s2[50];
+   char *s1, *s2;
 
    p_libnucnet = Libnucnet__new();
+
+   s1 = (char *) malloc( I_BUF * sizeof( char ) );
+   s2 = (char *) malloc( I_BUF * sizeof( char ) );
 
    strcpy( s1, s_file_name );
    strcpy( s2, s_nuc_xpath );
@@ -46,6 +50,9 @@ initialize_(
      trimwhitespace( s2 ),
      NULL
    );
+
+   free( s1 );
+   free( s2 );
 
    return 0;
 }
@@ -87,7 +94,9 @@ int
 getzone_( const char *s_zone_xml )
 {
 
-  char s1[50];
+  char *s1;
+
+  s1 = (char *) malloc( I_BUF * sizeof( char ) );
 
   strcpy( s1, s_zone_xml );
 
@@ -102,6 +111,8 @@ getzone_( const char *s_zone_xml )
     fprintf( stderr, "No zones were assigned!\n" );
     exit( EXIT_FAILURE );
   }
+
+  free( s1 );
 
   return 0;
 
@@ -478,7 +489,6 @@ char *trimwhitespace( char *str )
 {
 
   char *end;
-  int i = 0;
 
 /* Trim leading space */
 
@@ -493,7 +503,6 @@ char *trimwhitespace( char *str )
   while(end > str && isspace(*end))
   {
     end--;
-    printf( "%d %s\n", i++, end );
   }
 
 /* Write new terminator */
