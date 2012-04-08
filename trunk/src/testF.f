@@ -62,7 +62,7 @@ C      call getarg( i, arg )
       sxpath = '[z <= 30]'
       szone = '../data_pub/zone.xml'
 
-      do_decay = .false.
+      do_decay = .true.
 
       print *, 'Program : ',version
       WRITE(*,'(A)') ' ENTER Control File Name : '

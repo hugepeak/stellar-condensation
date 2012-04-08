@@ -211,11 +211,15 @@ getelementalabundances_( double *d_y_elem )
 
   getabundances_( a_z, a_a, a_y );
 
-  for( i = 0; i < i_species; i++ ) d_y_elem[i] = 0.;
+  for( i = 0; i < i_species; i++ )
+  {
+    if( a_z[i] > 0 ) d_y_elem[a_z[i]-1] = 0.;
+  }
 
   for( i = 0; i < i_species; i++ )
-    if( a_z[i] > 0 )
-      d_y_elem[a_z[i]-1] += a_y[i];
+  {
+    if( a_z[i] > 0 ) d_y_elem[a_z[i]-1] += a_y[i];
+  }
 
   free( a_z );
   free( a_a );
