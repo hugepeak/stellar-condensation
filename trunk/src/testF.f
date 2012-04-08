@@ -25,6 +25,7 @@ C      character*32 arg
       real*8 yel(nzmax), y(nmax),matwt,totmol,atno(nmax)
 
       character*50 snet, szone, sxpath
+      logical do_decay
 
 C
       data version/'cwin1123.exe 02/13/95'/
@@ -60,6 +61,8 @@ C      call getarg( i, arg )
       snet = '../data_pub/nuclear_decay_net.xml'
       sxpath = '[z <= 30]'
       szone = '../data_pub/zone.xml'
+
+      do_decay = .false.
 
       print *, 'Program : ',version
       WRITE(*,'(A)') ' ENTER Control File Name : '
@@ -1462,10 +1465,10 @@ c...  Do the decay loop
 
 C      do istep = 1, nsteps
         istep = istep + 1
-C        dt = 1.d4
-C        t = t + dt
-        !call decay( dtime )
-        !call getelementalabundances( yel )
+        if( do_decay ) then
+          call decay( dtime )
+          call getelementalabundances( yel )
+        endif
 
 c...    Print the elemental abundances
 

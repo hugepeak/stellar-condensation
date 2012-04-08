@@ -459,7 +459,7 @@ c      print *,(gamma(i),i=1,ms(iss))
       INCLUDE 'con0621i.f'
       common/fpmin/issmin,ineg(isslimit),inflag,Ginf,ffac,xfac,G0
       dimension np(nseedlimit),x(isslimit)
-      EXTERNAL my_dfunc,my_func
+      EXTERNAL my_dfunc,this_func
 C     initial estimation of mole fractions for a non-ideal solid solution
 C     return sx(iss,*)
 c      print*,iss,iseed
@@ -527,7 +527,8 @@ C     calculation for each seed
             isxfail=0
             irun=0
 C 10         call frprmn(x,kch-1,gtol,icount,fret)
- 10         call dfpmin(x,kch-1,gtol,icount,fret,my_func,my_dfunc,ires)
+ 10         call
+     &        dfpmin(x,kch-1,gtol,icount,fret,this_func,my_dfunc,ires)
 C           Exception for metal.  See "func"
             if (wss(iss)(1:8).eq.'Metal   ') fret=G0
             xl=1d0
@@ -613,7 +614,7 @@ C**      Disabled 5/31/94
                irun=0
 C 11            call frprmn(x,kch-1,gtol,icount,fret)
  11            call
-     &           dfpmin(x,kch-1,gtol,icount,fret,my_func,my_dfunc,ires)
+     &          dfpmin(x,kch-1,gtol,icount,fret,this_func,my_dfunc,ires)
                if (wss(iss)(1:8).eq.'Metal   ') fret=G0
         if (ires.eq.1) then
           if (isummary.ge.2) then
