@@ -43,8 +43,10 @@ C               logKf=xc(1,ns)+xc(2,ns)/T+xc(3,ns)/T^2+... (T=temp.(K)/100)
 C               sx: mole fraction of endmember of s.s.
 C               nssp: internal species # of solid solution
 C               mse: # of extra endmembers
-      common/nonideal/nonid(nsslimit),gamma(isslimit),
-     >          dgamma(isslimit,isslimit)
+c      common/nonideal/nonid(nsslimit),gamma(isslimit),
+c     >          dgamma(isslimit,isslimit)
+      common/nonideal/gamma(isslimit),dgamma(isslimit,isslimit),
+     >          nonid(nsslimit)
 C               nonid(nss): flag for non-ideality of solid solution
 C               gamma(iss): activity coefficient
 C               dgamma(iss,iss): derivative of gamma, cf. subroutine calcgamma

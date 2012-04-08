@@ -111,8 +111,10 @@ C      REAL*8 COEF(5),BSTOR(3,10),TSTOR(3,10),QSTOR(5)
       CHARACTER*1 NAMES(33,17)
       common/ss/sx(nsslimit,isslimit),nssp(nsslimit),
      >          mse(nsslimit),msExtra
-      common/nonideal/nonid(nsslimit),gamma(isslimit),
-     >          dgamma(isslimit,isslimit)
+c      common/nonideal/nonid(nsslimit),gamma(isslimit),
+c     >          dgamma(isslimit,isslimit)
+      common/nonideal/gamma(isslimit),dgamma(isslimit,isslimit),
+     >                nonid(nsslimit)
       common/r/rgas1,rgas2,rgas3
       common/cmas1/CPL(5,4),HL(5),SL(5),WQS(5),WQH(5)
       common/cmas2/WBS(3,10),WBH(3,10),WTS(3,10),WTH(3,10)

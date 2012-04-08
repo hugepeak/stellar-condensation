@@ -248,9 +248,9 @@ getspecies( Libnucnet__Species *p_species, void *p_data )
   i_index = Libnucnet__Species__getIndex( p_species );
 
   p_new_user_data->pUserData->aZ[i_index] =
-    Libnucnet__Species__getZ( p_species );
+    (int) Libnucnet__Species__getZ( p_species );
   p_new_user_data->pUserData->aA[i_index] =
-    Libnucnet__Species__getA( p_species );
+    (int) Libnucnet__Species__getA( p_species );
   p_new_user_data->pUserData->aY[i_index] =
     Libnucnet__Zone__getSpeciesAbundance(
       p_new_user_data->pZone,

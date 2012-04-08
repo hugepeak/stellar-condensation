@@ -1464,8 +1464,8 @@ C      do istep = 1, nsteps
         istep = istep + 1
 C        dt = 1.d4
 C        t = t + dt
-        call decay( dtime )
-        call getelementalabundances( yel )
+        !call decay( dtime )
+        !call getelementalabundances( yel )
 
 c...    Print the elemental abundances
 

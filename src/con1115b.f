@@ -939,7 +939,7 @@ C     >' # SOLIDS =',I3)
       if (iwindow.ge.1) WRITE(16,12)T0,PT,rgas2*t0,po2,sx(2,1),is
       if (iwindow.ge.1) WRITE(17,12)T0,PT,rgas2*t0,po2,sx(2,1),is
       else
-      WRITE(8,1002)T0,PT,rgas2*t0,po2,is
+      WRITE(8,1002)T0,PT,rgas2*t0,po2,sx(2,1),is
       WRITE(8,30)Vtotal,pt/ptot/TG
       if (isummary.ge.1) WRITE(7,1002)T0,PT,rgas2*t0,po2,sx(2,1),is
       if (isummary.ge.2) WRITE(15,1002)T0,PT,rgas2*t0,po2,sx(2,1),is
