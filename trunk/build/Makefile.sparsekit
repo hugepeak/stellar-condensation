@@ -1,0 +1,27 @@
+AR = ar -rcv
+
+#
+# library objects
+#
+
+SPOBJ =	$(SKITDIR)/BLASSM/blassm.o	\
+	$(SKITDIR)/BLASSM/matvec.o	\
+	$(SKITDIR)/FORMATS/formats.o	\
+	$(SKITDIR)/FORMATS/unary.o	\
+	$(SKITDIR)/INFO/infofun.o	\
+	$(SKITDIR)/INOUT/inout.o	\
+	$(SKITDIR)/ITSOL/ilut.o		\
+	$(SKITDIR)/ITSOL/iters.o	\
+	$(SKITDIR)/MATGEN/FDIF/genmat.o	\
+	$(SKITDIR)/MATGEN/FEM/elmtlib2.o\
+	$(SKITDIR)/MATGEN/FEM/femgen.o	\
+	$(SKITDIR)/MATGEN/FEM/meshes.o	\
+	$(SKITDIR)/MATGEN/MISC/sobel.o	\
+	$(SKITDIR)/MATGEN/MISC/zlatev.o	\
+	$(SKITDIR)/ORDERINGS/ccn.o	\
+	$(SKITDIR)/ORDERINGS/color.o	\
+	$(SKITDIR)/ORDERINGS/dsepart.o
+
+libskit: $(SPOBJ)
+	 $(AR) $(SKITDIR)/libskit.a $(SPOBJ)
+

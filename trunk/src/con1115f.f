@@ -1,7 +1,7 @@
 C     "con1115f.f" 11/16/94
 C     Interface routines for the use of "Numerical Recipes"
 
-      DOUBLE PRECISION FUNCTION func(x)
+      DOUBLE PRECISION FUNCTION my_func(x)
       IMPLICIT REAL*8(A-H,O-Z)
       DOUBLE PRECISION x(*)
       INCLUDE 'con0621i.f'
@@ -95,18 +95,18 @@ C        additional term.
             G0=G
         endif
       endif
-      func=G/ffac
+      my_func=G/ffac
       G0=G0/ffac
       end
 
-      SUBROUTINE dfunc(x,df)
+      SUBROUTINE my_dfunc(x,df)
       IMPLICIT REAL*8(A-H,O-Z)
       INCLUDE 'con0621i.f'
       DOUBLE PRECISION x(*),df(isslimit)
       common/fpmin/issmin,ineg(isslimit),inflag,Ginf,ffac,xfac,G0
       gasconst=rgas1/1d3
       a=dlog(10d0)
-      f=func(x)
+      f=my_func(x)
       if (wss(issmin)(1:8).eq.'Spinel  ') then
         if (inflag.eq.0) then
             df(1)=amuss(issmin,2)-amuss(issmin,4)
@@ -164,22 +164,22 @@ C     PARAMETER (ALF=1.d-4,TOLX=1.d-12)
 C
 C     Also lines with "ires"
 
-      SUBROUTINE dfpmin(p,n,gtol,iter,fret,func,dfunc,ires)
+      SUBROUTINE dfpmin(p,n,gtol,iter,fret,my_func,my_dfunc,ires)
       INTEGER iter,n,NMAX,ITMAX,ires
-      DOUBLE PRECISION fret,gtol,p(n),func,EPS,STPMX,TOLX
+      DOUBLE PRECISION fret,gtol,p(n),my_func,EPS,STPMX,TOLX
       INCLUDE 'con0330p.f'
       PARAMETER (NMAX=isslimit,ITMAX=200,STPMX=100d0,EPS=3.d-12,
      >           TOLX=4.d0*EPS)
      *
-      EXTERNAL dfunc,func
-CU    USES dfunc,func,lnsrch
+      EXTERNAL my_dfunc,my_func
+CU    USES my_dfunc,my_func,lnsrch
       INTEGER i,its,j
       LOGICAL check
       DOUBLE PRECISION den,fac,fad,fae,fp,stpmax,sum,sumdg,sumxi,temp
      *,test,dg(NMAX),
      *g(NMAX),hdg(NMAX),hessin(NMAX,NMAX),pnew(NMAX),xi(NMAX)
-      fp=func(p)
-      call dfunc(p,g)
+      fp=my_func(p)
+      call my_dfunc(p,g)
       sum=0.d0
       do 12 i=1,n
         do 11 j=1,n
@@ -192,7 +192,7 @@ CU    USES dfunc,func,lnsrch
       stpmax=STPMX*max(sqrt(sum), dble(n))
       do 27 its=1,ITMAX
         iter=its
-        call lnsrch(n,p,fp,g,xi,pnew,fret,stpmax,check,func,ires)
+        call lnsrch(n,p,fp,g,xi,pnew,fret,stpmax,check,my_func,ires)
         fp=fret
         do 13 i=1,n
           xi(i)=pnew(i)-p(i)
@@ -201,7 +201,7 @@ CU    USES dfunc,func,lnsrch
         do 15 i=1,n
           dg(i)=g(i)
 15      continue
-        call dfunc(p,g)
+        call my_dfunc(p,g)
         test=0.d0
         den=max(fret,1.d0)
         do 16 i=1,n
@@ -272,14 +272,14 @@ C      print *,'too many iterations in dfpmin'
       END
 C  (C) Copr. 1986-92 Numerical Recipes Software o)'%+!:591`$!.
 
-      SUBROUTINE lnsrch(n,xold,fold,g,p,x,f,stpmax,check,func,ires)
+      SUBROUTINE lnsrch(n,xold,fold,g,p,x,f,stpmax,check,my_func,ires)
       INTEGER n,ires
       LOGICAL check
-      DOUBLE PRECISION f,fold,stpmax,g(n),p(n),x(n),xold(n),func,ALF
+      DOUBLE PRECISION f,fold,stpmax,g(n),p(n),x(n),xold(n),my_func,ALF
      *,TOLX
       PARAMETER (ALF=1.d-4,TOLX=1.d-12)
-      EXTERNAL func
-CU    USES func
+      EXTERNAL my_func
+CU    USES my_func
       INTEGER i
       DOUBLE PRECISION a,alam,alam2,alamin,b,disc,f2,fold2,rhs1,rhs2
      *,slope,sum,temp,
@@ -315,7 +315,7 @@ CU    USES func
         do 15 i=1,n
           x(i)=xold(i)+alam*p(i)
 15      continue
-        f=func(x)
+        f=my_func(x)
         if(alam.lt.alamin)then
           do 16 i=1,n
             x(i)=xold(i)
