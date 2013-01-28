@@ -7,8 +7,8 @@ FC=gfortran -g
 # Versions and urls.
 #===============================================================================
 
-LIBNUCNET_VERSION = 0.13
-WNMATRIX_VERSION = 0.13
+LIBNUCNET_VERSION = 0.16
+WNMATRIX_VERSION = 0.14
 WNSPARSE_VERSION = 0.4
 
 SOURCEFORGE_URL = http://sourceforge.net/projects/
@@ -17,7 +17,7 @@ SKIT_URL = http://www-users.cs.umn.edu/~saad/software/SPARSKIT/
 
 LIBNUCNET_URL = $(SOURCEFORGE_URL)/libnucnet/files/libnucnet
 WNMATRIX_URL = $(SOURCEFORGE_URL)/wnmatrix/files/wn_matrix
-WNSPARSE_URL = $(WEBNUCLEO_URL)/wn_sparse_solve/downloads
+WNSPARSE_URL = $(SOURCEFORGE_URL)/wnsparsesolve/files/wn_sparse_solve
 
 #===============================================================================
 # VENDORDIR is the directory for storing webnucleo codes.
