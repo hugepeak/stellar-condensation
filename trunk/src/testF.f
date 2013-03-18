@@ -1457,6 +1457,11 @@ C       time = (t0/6.169e7)**(1/-1.78)*1.0
 
        time = time*24.0*3600.0
 
+C Brad's note: Here is where you get the time from the temperature
+C    t0 = temperature ("current T")
+C    timeprev = previous value of the time (corresponding to previous T)
+C    time = solve for time from t0.
+
        dtime = time - timeprev
 C       print *,time, timeprev, dtime
 C       pause
