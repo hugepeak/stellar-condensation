@@ -21,7 +21,7 @@ C
 C      character*32 arg
       parameter (nzmax = 100, nmax=5000, nsteps = 100)
 
-      integer*4 i, istep, ispecies, iz(nmax), ia(nmax)
+      integer*4 i, istep, ispecies, iz(nmax), ia(nmax), i_thermo
       real*8 yel(nzmax), y(nmax),matwt,totmol,atno(nmax)
 
       character*50 snet, szone, sxpath
@@ -126,6 +126,9 @@ C      pause
 C
       call readcontfile(filename)
 C
+      i_thermo = 0
+      call readthermofile( i_thermo )
+c
       DLOGP=DLOG10(PTOT)
       DO 11 J=1,NS+msExtra
       dJJ=0d0
@@ -1462,9 +1465,11 @@ C    t0 = temperature ("current T")
 C    timeprev = previous value of the time (corresponding to previous T)
 C    time = solve for time from t0.
 
+       if( i_thermo .eq. 1 )
+     &       call gettimefromtemperature( t0, timeprev, time )
+
        dtime = time - timeprev
-C       print *,time, timeprev, dtime
-C       pause
+       print *, t0, time, timeprev, dtime
        timeprev = time
 c...  Do the decay loop
 

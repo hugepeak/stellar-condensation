@@ -1,4 +1,6 @@
 #include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <Libnucnet.h>
 #include <WnSparseSolve.h>
 
@@ -6,6 +8,7 @@
 #define S_DEBUG     "debug"
 #define I_BUF       256
 
+int readthermofile_( int * );
 int initialize_( const char *, const char * );
 int getzone_( const char * );
 int getnumberofspecies_( int * );
@@ -24,9 +27,68 @@ int zone_decay( Libnucnet__Zone *, void * );
 int
 clean_species( Libnucnet__Species *, Libnucnet__Zone * );
 char * trimwhitespace( char * );
+double
+interpolate( double, double, gsl_vector *, gsl_vector * );
+int
+gettimefromtemperature_( double *, double *, double * );
 
 Libnucnet *p_libnucnet;
+gsl_vector * p_time, * p_temperature, * p_pressure;
 
+int
+readthermofile_( int * i_thermo )
+{
+
+  char s_file[256];
+  size_t i;
+  double d_time, d_temperature, d_pressure;
+  FILE * p_file;
+
+  fprintf( stdout, "Enter thermo file name (or \"none\" to not use one): " );
+
+  fscanf( stdin, "%s", s_file );
+
+  if( strcmp( s_file, "none" ) == 0 ) return 0;
+
+  p_file = fopen( s_file, "r" );
+
+  if( !p_file )
+  {
+    fprintf( stderr, "No such thermo file.\n" );
+    exit( EXIT_FAILURE );
+  }
+
+  i = 0;
+  while( !feof( p_file ) )
+  {
+    fscanf( p_file, "%lf %lf %lf\n", &d_time, &d_temperature, &d_pressure );
+    i++;
+  }
+  
+  p_time = gsl_vector_alloc( i );
+  p_temperature = gsl_vector_alloc( i );
+  p_pressure = gsl_vector_alloc( i );
+
+  rewind( p_file );
+
+  i = 0;
+  while( !feof( p_file ) )
+  {
+    fscanf( p_file, "%lf %lf %lf\n", &d_time, &d_temperature, &d_pressure );
+    gsl_vector_set( p_time, i, d_time );
+    gsl_vector_set( p_time, i, d_temperature );
+    gsl_vector_set( p_time, i, d_pressure );
+    i++;
+  }
+
+  fclose( p_file );
+
+  *i_thermo = 1;
+
+  return 0;
+
+}
+  
 int
 initialize_(
   const char *s_file_name,
@@ -516,3 +578,69 @@ char *trimwhitespace( char *str )
   return str;
 
 }
+
+int
+gettimefromtemperature_(
+  double * p_current_temperature,
+  double * p_minimum_time,
+  double * p_new_time
+)
+{
+
+  *p_new_time =
+    interpolate(
+      *p_current_temperature,
+      *p_minimum_time,
+      p_temperature,
+      p_time
+    ); 
+
+  return 0;
+
+}
+
+double
+interpolate( double d_x, double d_y_curr, gsl_vector * p_x, gsl_vector * p_y )
+{
+
+  size_t i;
+
+  if( p_x->size != p_y->size )
+  {
+    fprintf( stderr, "Input vectors don't have same size.\n" );
+    exit( EXIT_FAILURE );
+  }
+
+  for( i = 0; i < p_x->size - 1; i++ )
+  {
+
+    if( 
+        (
+          gsl_vector_get( p_x, i ) <= d_x
+          &&
+          d_x < gsl_vector_get( p_x, i + 1 )
+        ) ||
+        (
+          gsl_vector_get( p_x, i ) >= d_x
+          &&
+          d_x > gsl_vector_get( p_x, i + 1 )
+        )
+    )
+    {
+      if( d_y_curr < gsl_vector_get( p_y, i + 1 ) )
+        break;
+    }
+
+  }
+
+  if( i < p_x->size - 1 )
+    return
+      gsl_vector_get( p_y, i ) +
+      ( gsl_vector_get( p_y, i + 1 ) - gsl_vector_get( p_y, i ) ) *
+      ( d_x - gsl_vector_get( p_x, i ) ) /
+      ( gsl_vector_get( p_x, i + 1 ) - gsl_vector_get( p_x, i ) );
+  else
+    return gsl_vector_get( p_y, i );
+
+}
+
