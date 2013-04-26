@@ -1542,7 +1542,6 @@ C      call cleanup
 
       if( i_thermo .eq. 1 ) then
         call gettotalpressurefromtime( time, PTOT )
-        PTOT = 1.e-6 * PTOT   ! This is to convert cgs to bars
       else
            PTOT=-11.84210526+0.00368421*t0
            PTOT=10.0**PTOT
