@@ -1423,6 +1423,7 @@ C     abundances are normalized to their sum=1
          if (iwindow.ge.1) write(18,120) t0,Ttobe,Tprevious,temp,Tdone
  100     format(' Checking',F9.3,' K  ( Done',F9.3,' K )')
       else
+         if( i_thermo .eq. 1 ) time = timeprev
          print 110,T0,Tdone,Tnew
          if (idebug.ge.2) write(8,110) t0,Tdone,Tnew
          if (isummary.ge.2) write(15,110) t0,Tdone,Tnew
@@ -1444,6 +1445,8 @@ C
                    
 C            t0=pstore(pind)
 
+      if( i_thermo .eq. 0 ) then
+
 C       time = 3.13819-8.24014E-4*t0
 C     add 300K:
        time = 3.38539-8.24014E-4*t0
@@ -1460,17 +1463,17 @@ C       time = (t0/6.169e7)**(1/-1.78)*1.0
 
        time = time*24.0*3600.0
 
-C Brad's note: Here is where you get the time from the temperature
+      endif
+
 C    t0 = temperature ("current T")
 C    timeprev = previous value of the time (corresponding to previous T)
 C    time = solve for time from t0.
 
+       timeprev = time
        if( i_thermo .eq. 1 )
      &       call gettimefromtemperature( t0, timeprev, time )
 
        dtime = time - timeprev
-       print *, t0, time, timeprev, dtime
-       timeprev = time
 c...  Do the decay loop
 
 C      do istep = 1, nsteps
@@ -1537,6 +1540,10 @@ C      call cleanup
       r(22)=yel(10)
       r(23)=yel(18)
 
+      if( i_thermo .eq. 1 ) then
+        call gettotalpressurefromtime( time, PTOT )
+        PTOT = 1.e-6 * PTOT   ! This is to convert cgs to bars
+      else
            PTOT=-11.84210526+0.00368421*t0
            PTOT=10.0**PTOT
 C      PTOT=-10.81169+0.00138*t0+5.74274E-7*t0*t0
@@ -1561,6 +1568,8 @@ C      PTOT=PTOT*((time/24.0/3600.0)/1.0)**(-3.0)
 C     intermediate pressure:
       PTOT=PTOT/1.0
       PTOT=83.14472*t0/(matwt/PTOT)
+      endif
+
       DLOGP=DLOG10(PTOT)
 
 

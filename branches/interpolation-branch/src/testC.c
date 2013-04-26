@@ -27,10 +27,10 @@ int zone_decay( Libnucnet__Zone *, void * );
 int
 clean_species( Libnucnet__Species *, Libnucnet__Zone * );
 char * trimwhitespace( char * );
-double
-interpolate( double, double, gsl_vector *, gsl_vector * );
-int
-gettimefromtemperature_( double *, double *, double * );
+double interpolate( double, double, gsl_vector *, gsl_vector * );
+int gettimefromtemperature_( double *, double *, double * );
+int gettotalpressurefromtime_( double *, double * );
+
 
 Libnucnet *p_libnucnet;
 gsl_vector * p_time, * p_temperature, * p_pressure;
@@ -76,8 +76,8 @@ readthermofile_( int * i_thermo )
   {
     fscanf( p_file, "%lf %lf %lf\n", &d_time, &d_temperature, &d_pressure );
     gsl_vector_set( p_time, i, d_time );
-    gsl_vector_set( p_time, i, d_temperature );
-    gsl_vector_set( p_time, i, d_pressure );
+    gsl_vector_set( p_temperature, i, d_temperature );
+    gsl_vector_set( p_pressure, i, d_pressure );
     i++;
   }
 
@@ -593,6 +593,25 @@ gettimefromtemperature_(
       *p_minimum_time,
       p_temperature,
       p_time
+    ); 
+
+  return 0;
+
+}
+
+int
+gettotalpressurefromtime_(
+  double * p_current_time,
+  double * p_new_pressure
+)
+{
+
+  *p_new_pressure =
+    interpolate(
+      *p_current_time,
+      0.,
+      p_time,
+      p_pressure
     ); 
 
   return 0;
