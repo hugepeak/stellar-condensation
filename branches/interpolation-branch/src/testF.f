@@ -1445,6 +1445,8 @@ C
                    
 C            t0=pstore(pind)
 
+      timeprev = time
+
       if( i_thermo .eq. 0 ) then
 
 C       time = 3.13819-8.24014E-4*t0
@@ -1465,15 +1467,14 @@ C       time = (t0/6.169e7)**(1/-1.78)*1.0
 
       endif
 
-C    t0 = temperature ("current T")
-C    timeprev = previous value of the time (corresponding to previous T)
-C    time = solve for time from t0.
+C    time = interpolate for time from t0.
 
-       timeprev = time
-       if( i_thermo .eq. 1 )
-     &       call gettimefromtemperature( t0, timeprev, time )
+      if( i_thermo .eq. 1 ) then
+        call gettimefromtemperature( t0, timeprev, time )
+      endif
 
        dtime = time - timeprev
+
 c...  Do the decay loop
 
 C      do istep = 1, nsteps
