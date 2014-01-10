@@ -7,7 +7,7 @@ FC=gfortran -g
 # Versions and urls.
 #===============================================================================
 
-LIBNUCNET_VERSION = 0.16
+LIBNUCNET_VERSION = 0.21
 WNMATRIX_VERSION = 0.14
 WNSPARSE_VERSION = 0.4
 
