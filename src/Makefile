@@ -38,7 +38,7 @@ CEXEC = average_zones
 
 FEXEC = testF
 
-$(CEXEC) : $(COBJ)
+$(CEXEC) : lib $(COBJ)
 	cp $(LIBNUCNETDIR)/../examples/average_zones.c .
 	$(CC) -c -o $(OBJDIR)/$@.o $@.c
 	$(FC) -o $@ $(CLIBS) $(FLIBS) $(OBJDIR)/$@.o $(COBJ)
