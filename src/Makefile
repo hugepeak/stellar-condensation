@@ -8,17 +8,10 @@ include $(BUILD_DIR)/Makefile
 
 VPATH = $(BUILD_DIR)
 
-#===============================================================================
-# Compile main codes.
-#===============================================================================
-
-$(OBJDIR)/testF.o: testF.f 
-	$(FC) -c -o $(OBJDIR)/testF.o testF.f
+#--------------------------------------------------------------------------
 
 $(OBJDIR)/testC.o: testC.c 
 	$(CC) -c -o $(OBJDIR)/testC.o testC.c
-
-#--------------------------------------------------------------------------
 
 CON_OBJ = $(OBJDIR)/con1115b.o         		\
           $(OBJDIR)/con1123c.o       		\
@@ -29,17 +22,30 @@ CON_OBJ = $(OBJDIR)/con1115b.o         		\
 $(CON_OBJ): $(OBJDIR)/%.o : %.f
 	$(FC) -c -o $@ $<
 
-OBJ =   $(WN_OBJ)				\
-	$(CON_OBJ)				\
+COBJ =  $(WN_OBJ)				\
 	$(SP_OBJ)				\
         $(OBJDIR)/testC.o			\
 
+FOBJ =  $(CON_OBJ)				\
+
+
+
 #===============================================================================
-# Compile codes depending only on Libnucnet__Nuc.
+# Compile codes.
 #===============================================================================
 
-testF : lib $(OBJDIR)/testF.o $(OBJ)
-	$(FC) $(OBJDIR)/testF.o $(OBJ) $(CLIBS) $(FLIBS) -o testF
+CEXEC = average_zones
+
+FEXEC = testF
+
+$(CEXEC) : $(COBJ)
+	cp $(LIBNUCNETDIR)/../examples/average_zones.c .
+	$(CC) -c -o $(OBJDIR)/$@.o $@.c
+	$(FC) -o $@ $(CLIBS) $(FLIBS) $(OBJDIR)/$@.o $(COBJ)
+
+$(FEXEC) : lib $(COBJ) $(FOBJ)
+	$(FC) -c -o $(OBJDIR)/$@.o $@.f
+	$(FC) -o $@ $(CLIBS) $(FLIBS) $(OBJDIR)/$@.o $(COBJ) $(FOBJ)
 
 cwin: $(OBJDIR)/con1123a.o $(COBJ)
 	$(FC) $(OBJDIR)/con1123a.o $(COBJ) $(CLIBS) -o cwin
@@ -49,6 +55,6 @@ cwin: $(OBJDIR)/con1123a.o $(COBJ)
 #===============================================================================
 
 cleanall: clean
-	rm testF
+	rm -fr $(CEXEC) $(FEXEC)
 
 
